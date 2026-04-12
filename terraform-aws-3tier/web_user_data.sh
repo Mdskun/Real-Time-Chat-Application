@@ -2,7 +2,7 @@
 apt update -y
 apt install -y nginx nodejs npm git
 
-git clone https://github.com/YOUR_REPO.git /app
+git clone https://github.com/Mdskun/chatapp.git /app
 cd /app/frontend
 
 npm install
