@@ -1,3 +1,4 @@
 .terraform
-terrafrom.tfstate
+terraform.tfstate
+.terraform.tfstate.lock.info
 .terraform.lock.hcl
