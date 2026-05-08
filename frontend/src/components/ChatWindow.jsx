@@ -74,7 +74,7 @@ export default function ChatWindow({
     const fetchBlockStatus = async () => {
       try {
         const res = await axios.get(
-          `https://yashgarje31.pythonanywhere.com/api/chat/block/status/?user_id=${otherUser.id}`,
+          `http://127.0.0.1:8000/api/chat/block/status/?user_id=${otherUser.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@ export default function ChatWindow({
     // Fetches the message history with the other user.
     const fetchMessages = async () => {
       try {
-        const url = `https://yashgarje31.pythonanywhere.com/api/chat/messages/?user_id=${otherUser.id}`;
+        const url = `http://127.0.0.1:8000/api/chat/messages/?user_id=${otherUser.id}`;
 
         const res = await axios.get(url, {
           headers: {
@@ -115,7 +115,7 @@ export default function ChatWindow({
     // Fetches the presence status for the other user.
     const fetchPresence = async () => {
       try {
-        const res = await axios.get("https://yashgarje31.pythonanywhere.com/api/presence/", {
+        const res = await axios.get("http://127.0.0.1:8000/api/presence/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -166,7 +166,7 @@ export default function ChatWindow({
       const token = localStorage.getItem("access");
       // POST request to send the new message.
       const res = await axios.post(
-        "https://yashgarje31.pythonanywhere.com/api/chat/messages/",
+        "http://127.0.0.1:8000/api/chat/messages/",
         {
           receiver: otherUser.id,
           content: text,
@@ -198,7 +198,7 @@ export default function ChatWindow({
       if (!blockInfo.blockedByMe) {
         // If not blocked, send a request to block the user.
         await axios.post(
-          "https://yashgarje31.pythonanywhere.com/api/chat/block/",
+          "http://127.0.0.1:8000/api/chat/block/",
           { user_id: otherUser.id },
           {
             headers: {
@@ -210,7 +210,7 @@ export default function ChatWindow({
       } else {
         // If already blocked, send a request to unblock the user.
         await axios.delete(
-          `https://yashgarje31.pythonanywhere.com/api/chat/block/?user_id=${otherUser.id}`,
+          `http://127.0.0.1:8000/api/chat/block/?user_id=${otherUser.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

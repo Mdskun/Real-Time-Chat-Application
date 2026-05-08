@@ -22,7 +22,7 @@ export default function Sidebar({
       try {
         // Fetches users from the API.
         const token = localStorage.getItem("access");
-        const res = await axios.get("https://yashgarje31.pythonanywhere.com/api/users/", {
+        const res = await axios.get("http://127.0.0.1:8000/api/users/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -44,7 +44,7 @@ export default function Sidebar({
       // Fetches the latest presence data for all users.
       try {
         const res = await axios.get(
-          "https://yashgarje31.pythonanywhere.com/api/presence/",
+          "http://127.0.0.1:8000/api/presence/",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -77,7 +77,7 @@ export default function Sidebar({
     const loadUnread = async () => {
       try {
         const res = await axios.get(
-          "https://yashgarje31.pythonanywhere.com/api/chat/unread_counts/",
+          "http://127.0.0.1:8000/api/chat/unread_counts/",
           {
             headers: { Authorization: `Bearer ${token}` },
           }

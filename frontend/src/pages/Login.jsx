@@ -18,7 +18,7 @@ export default function Login({ onLogin, onShowRegister, onShowContact }) {
 
     try {
       // Sends a POST request to the login API endpoint with username and password.
-      const res = await axios.post("https://yashgarje31.pythonanywhere.com/api/login/", {
+      const res = await axios.post("http://127.0.0.1:8000/api/login/", {
         username,
         password,
       });

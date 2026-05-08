@@ -19,7 +19,7 @@ export default function Register({ onRegistered, onShowLogin, onShowContact }) {
   // Handles changes in form inputs and updates the form state.
   const handleChange = (e) => {
     const {name, value} = e.target;
-    
+
     setForm({
       ...form,
       [name]: value,
@@ -35,7 +35,7 @@ export default function Register({ onRegistered, onShowLogin, onShowContact }) {
     try {
       // Sends a POST request to the registration API endpoint with the form data.
       const res = await axios.post(
-        "https://yashgarje31.pythonanywhere.com/api/register/", 
+        "http://127.0.0.1:8000/api/register/",
         form
       );
 

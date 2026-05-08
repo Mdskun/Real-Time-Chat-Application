@@ -42,7 +42,7 @@ export default function App() {
       try {
         // Fetch user data from the '/api/me/' endpoint using the stored token.
         const token = localStorage.getItem("access");
-        const res = await axios.get("https://yashgarje31.pythonanywhere.com/api/me/", {
+        const res = await axios.get("http://127.0.0.1:8000/api/me/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
