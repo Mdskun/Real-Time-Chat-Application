@@ -71,7 +71,7 @@ export default function Login({ onLogin, onShowRegister, onShowContact }) {
             className="btn btn-link p-0"
             onClick={onShowRegister}
           >
-            New user? Register
+            Register
           </button>
         </div>
       </div>

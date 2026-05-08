@@ -137,14 +137,14 @@ export default function Register({ onRegistered, onShowLogin, onShowContact }) {
             className="btn btn-link p-0"
             onClick={onShowLogin}
           >
-            Already have an account? Login
+            Back to Login
           </button>
           {/* Button to switch to the Contact view to get the secret code. */}
           <button
             className="btn btn-link p-0"
             onClick={onShowContact}
           >
-            Don&apos;t know secret code? Contact
+            Don&apos;t know secret code ?
           </button>
         </div>
       </div>
