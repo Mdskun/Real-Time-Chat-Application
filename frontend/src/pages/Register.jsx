@@ -34,8 +34,9 @@ export default function Register({ onRegistered, onShowLogin, onShowContact }) {
 
     try {
       // Sends a POST request to the registration API endpoint with the form data.
+      const API_BASE_URL = import.meta.env.VITE_API_URL;
       const res = await axios.post(
-        "http://127.0.0.1:8000/api/register/",
+        `${API_BASE_URL}/api/register/`,
         form
       );
 

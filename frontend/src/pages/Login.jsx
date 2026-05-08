@@ -18,7 +18,8 @@ export default function Login({ onLogin, onShowRegister, onShowContact }) {
 
     try {
       // Sends a POST request to the login API endpoint with username and password.
-      const res = await axios.post("http://127.0.0.1:8000/api/login/", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL;
+      const res = await axios.post(`${API_BASE_URL}/api/login/`, {
         username,
         password,
       });

@@ -15,14 +15,14 @@ export default function Sidebar({
   const [unreadCounts, setUnreadCounts] = useState({});
   // State for the search input value.
   const [searchTerm, setSearchTerm] = useState("");
-
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
   // Effect to fetch the list of all users once when the component mounts.
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         // Fetches users from the API.
         const token = localStorage.getItem("access");
-        const res = await axios.get("http://127.0.0.1:8000/api/users/", {
+        const res = await axios.get(`${API_BASE_URL}/api/users/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -44,7 +44,7 @@ export default function Sidebar({
       // Fetches the latest presence data for all users.
       try {
         const res = await axios.get(
-          "http://127.0.0.1:8000/api/presence/",
+          `${API_BASE_URL}/api/presence/`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -77,7 +77,7 @@ export default function Sidebar({
     const loadUnread = async () => {
       try {
         const res = await axios.get(
-          "http://127.0.0.1:8000/api/chat/unread_counts/",
+          `${API_BASE_URL}/api/chat/unread_counts/`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

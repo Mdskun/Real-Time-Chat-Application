@@ -41,8 +41,9 @@ export default function App() {
 
       try {
         // Fetch user data from the '/api/me/' endpoint using the stored token.
+        const API_BASE_URL = import.meta.env.VITE_API_URL;
         const token = localStorage.getItem("access");
-        const res = await axios.get("http://127.0.0.1:8000/api/me/", {
+        const res = await axios.get(`${API_BASE_URL}/api/me/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
