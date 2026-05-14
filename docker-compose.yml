@@ -5,7 +5,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - chat_db:/var/lib/postgresql/data
+      - chat_db_vol:/var/lib/postgresql/data
     restart: unless-stopped
     env_file:
       - .env
@@ -29,3 +29,5 @@ services:
     container_name: chat_frontend
     ports:
       - 80:80
+volumes:
+  chat_db_vol:
