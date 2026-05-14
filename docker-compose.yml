@@ -29,5 +29,7 @@ services:
     container_name: chat_frontend
     ports:
       - 80:80
+    env_file:
+      - .env
 volumes:
   chat_db_vol:
