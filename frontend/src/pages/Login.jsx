@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_BASE } from "../apiConfig.js";
 
 // Login component for user authentication.
 // It takes callbacks `onLogin`, `onShowRegister`, and `onShowContact` as props to handle successful login and navigation.
@@ -18,8 +19,7 @@ export default function Login({ onLogin, onShowRegister, onShowContact }) {
 
     try {
       // Sends a POST request to the login API endpoint with username and password.
-      const API_BASE_URL = import.meta.env.VITE_API_URL;
-      const res = await axios.post(`${API_BASE_URL}/api/login/`, {
+      const res = await axios.post(`${API_BASE}/login/`, {
         username,
         password,
       });

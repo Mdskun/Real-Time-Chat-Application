@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_BASE } from "../apiConfig.js";
 
 // Register component for user registration.
 // It takes callbacks `onRegistered`, `onShowLogin`, and `onShowContact` as props to handle navigation.
@@ -34,9 +35,8 @@ export default function Register({ onRegistered, onShowLogin, onShowContact }) {
 
     try {
       // Sends a POST request to the registration API endpoint with the form data.
-      const API_BASE_URL = import.meta.env.VITE_API_URL;
       const res = await axios.post(
-        `${API_BASE_URL}/api/register/`,
+        `${API_BASE}/register/`,
         form
       );
 

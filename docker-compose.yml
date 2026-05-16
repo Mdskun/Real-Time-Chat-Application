@@ -27,7 +27,7 @@ services:
       context: ./frontend
       dockerfile: dockerfile
       args:
-        VITE_API_URL: http://localhost:8000
+        VITE_API_BASE: http://localhost:8000/api
     container_name: chat_frontend
     ports:
       - 80:80

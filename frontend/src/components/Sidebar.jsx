@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE } from "../apiConfig.js";
 
 // Sidebar component that displays a list of users to chat with.
 export default function Sidebar({
@@ -15,14 +16,13 @@ export default function Sidebar({
   const [unreadCounts, setUnreadCounts] = useState({});
   // State for the search input value.
   const [searchTerm, setSearchTerm] = useState("");
-  const API_BASE_URL = import.meta.env.VITE_API_URL;
   // Effect to fetch the list of all users once when the component mounts.
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         // Fetches users from the API.
         const token = localStorage.getItem("access");
-        const res = await axios.get(`${API_BASE_URL}/api/users/`, {
+        const res = await axios.get(`${API_BASE}/users/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -44,7 +44,7 @@ export default function Sidebar({
       // Fetches the latest presence data for all users.
       try {
         const res = await axios.get(
-          `${API_BASE_URL}/api/presence/`,
+          `${API_BASE}/presence/`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -77,7 +77,7 @@ export default function Sidebar({
     const loadUnread = async () => {
       try {
         const res = await axios.get(
-          `${API_BASE_URL}/api/chat/unread_counts/`,
+          `${API_BASE}/chat/unread_counts/`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
