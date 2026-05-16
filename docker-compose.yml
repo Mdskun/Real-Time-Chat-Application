@@ -3,7 +3,7 @@ services:
     image: postgres:15
     container_name: chat_db
     ports:
-      - 8080:8080
+      - 5432:5432
     volumes:
       - chat_db_vol:/var/lib/postgresql/data
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
       - db
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     container_name: chat_backend
     ports:
       - 8000:8000
@@ -25,7 +25,9 @@ services:
       - backend
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
+      args:
+        VITE_API_URL: http://backend:8000
     container_name: chat_frontend
     ports:
       - 80:80

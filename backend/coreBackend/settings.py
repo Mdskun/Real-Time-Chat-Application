@@ -53,18 +53,27 @@ MIDDLEWARE = [
     "accounts.middleware.LastSeenMiddleware",
 ]
 
+# Better CORS configuration for Docker
 _extra_origins = [
     f"http://{h}" for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",") if h
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "http://localhost:5173",          # Development
+    "http://localhost",               # Add this for Docker compose
+    "http://localhost:80",            # Explicit port
+    "http://chat_frontend",           # Docker service name
+    "http://chat_frontend:80",        # Docker service with port
     "https://real-time-chat-application-eta.vercel.app",
     *_extra_origins,
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    "http://localhost",
+    "http://localhost:80",
+    "http://chat_frontend",
+    "http://chat_frontend:80",
     "https://real-time-chat-application-eta.vercel.app",
     *_extra_origins,
 ]
