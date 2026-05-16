@@ -60,8 +60,13 @@ _extra_origins = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",          # Development
-    "http://localhost",               # Add this for Docker compose
+    "http://localhost",               # Frontend at port 80
     "http://localhost:80",            # Explicit port
+    "http://localhost:8000",          # Direct API calls from browser
+    "http://localhost:8000/api",      # API with path
+    "http://127.0.0.1",
+    "http://127.0.0.1:80",
+    "http://127.0.0.1:8000",
     "http://chat_frontend",           # Docker service name
     "http://chat_frontend:80",        # Docker service with port
     "https://real-time-chat-application-eta.vercel.app",
@@ -72,6 +77,11 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost",
     "http://localhost:80",
+    "http://localhost:8000",
+    "http://localhost:8000/api",
+    "http://127.0.0.1",
+    "http://127.0.0.1:80",
+    "http://127.0.0.1:8000",
     "http://chat_frontend",
     "http://chat_frontend:80",
     "https://real-time-chat-application-eta.vercel.app",
