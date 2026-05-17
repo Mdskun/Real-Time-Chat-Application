@@ -30,7 +30,7 @@ services:
         VITE_API_BASE: http://localhost:8000/api
     container_name: chat_frontend
     ports:
-      - 80:80
+      - 3000:3000
     env_file:
       - .env
 volumes:
