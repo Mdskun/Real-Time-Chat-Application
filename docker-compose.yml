@@ -20,6 +20,7 @@ services:
       - 8000:8000
     env_file:
       - .env
+    command: sh -c "python manage.py migrate
   frontend:
     depends_on:
       - backend
@@ -27,7 +28,7 @@ services:
       context: ./frontend
       dockerfile: dockerfile
       args:
-        VITE_API_BASE: http://localhost:8000/api
+        VITE_API_BASE: http://backend:8000/api
     container_name: chat_frontend
     ports:
       - 3000:3000
