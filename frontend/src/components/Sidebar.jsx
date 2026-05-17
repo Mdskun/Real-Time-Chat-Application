@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { API_BASE } from "../apiConfig.js";
 
 // Sidebar component that displays a list of users to chat with.
 export default function Sidebar({
@@ -16,23 +15,19 @@ export default function Sidebar({
   const [unreadCounts, setUnreadCounts] = useState({});
   // State for the search input value.
   const [searchTerm, setSearchTerm] = useState("");
+
   // Effect to fetch the list of all users once when the component mounts.
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         // Fetches users from the API.
         const token = localStorage.getItem("access");
-        const res = await axios.get(`${API_BASE}/users/`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/users/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        if (Array.isArray(res.data)) {
-          setUsers(res.data);
-        } else {
-          console.error("Error: Expected array of users, got", res.data);
-          setUsers([]);
-        }
+        setUsers(res.data);
       } catch (err) {
         console.error("Error loading users", err);
       }
@@ -49,22 +44,18 @@ export default function Sidebar({
       // Fetches the latest presence data for all users.
       try {
         const res = await axios.get(
-          "http://127.0.0.1:8000/api/presence/",
+          `${import.meta.env.VITE_API_BASE_URL}/api/presence/`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
 
-        // Check if response is an array before using forEach
-        if (Array.isArray(res.data)) {
-          const map = {};
-          res.data.forEach((u) => {
-            map[u.id] = u;
-          });
-          setPresence(map);
-        } else {
-          console.error("Presence error: Expected array, got", res.data);
-        }
+        // Transforms the array of presence data into a map (object) for quick lookups by user ID.
+        const map = {};
+        res.data.forEach((u) => {
+          map[u.id] = u;
+        });
+        setPresence(map);
       } catch (err) {
         console.error("Presence error", err);
       }
@@ -86,22 +77,19 @@ export default function Sidebar({
     const loadUnread = async () => {
       try {
         const res = await axios.get(
-          "http://127.0.0.1:8000/api/chat/unread_counts/",
+          `${import.meta.env.VITE_API_BASE_URL}/api/chat/unread_counts/`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
 
-        // Check if response is an array before using forEach
-        if (Array.isArray(res.data)) {
-          let map = {};
-          res.data.forEach((u) => {
-            map[u.user_id] = u.count;
-          });
-          setUnreadCounts(map);
-        } else {
-          console.error("Unread error: Expected array, got", res.data);
-        }
+        // Transforms the array of unread counts into a map for quick lookups by sender's user ID.
+        let map = {};
+        res.data.forEach((u) => {
+          map[u.user_id] = u.count;
+        });
+
+        setUnreadCounts(map);
       } catch (err) {
         console.error("Unread error", err);
       }

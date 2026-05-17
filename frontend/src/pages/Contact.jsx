@@ -10,7 +10,7 @@ export default function Contact({ onBackToLogin }) {
 
         <ul className="list-unstyled mb-3">
           <li>
-            <strong>Email(creator's Email):</strong>{" "}
+            <strong>Email:</strong>{" "}
             <a href="mailto:manthandsoni@gmail.com">
               manthandsoni@gmail.com
             </a>

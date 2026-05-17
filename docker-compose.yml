@@ -1,38 +1,38 @@
+version: '3.9'
+
 services:
-  db:
-    image: postgres:15
-    container_name: chat_db
-    ports:
-      - 5432:5432
-    volumes:
-      - chat_db_vol:/var/lib/postgresql/data
-    restart: unless-stopped
-    env_file:
-      - .env
-  backend:
-    depends_on:
-      - db
-    build:
-      context: ./backend
-      dockerfile: dockerfile
-    container_name: chat_backend
-    ports:
-      - 8000:8000
-    env_file:
-      - .env
-    command: sh -c "python manage.py migrate"
   frontend:
-    depends_on:
-      - backend
+    container_name: chat_frontend
     build:
       context: ./frontend
       dockerfile: dockerfile
-      args:
-        VITE_API_BASE: http://backend:8000/api
-    container_name: chat_frontend
     ports:
-      - 3000:3000
+      - "5173:5173"
     env_file:
       - .env
+    depends_on:
+      - backend
+  backend:
+    container_name: chat_backend
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    container_name: chat_db
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+
 volumes:
-  chat_db_vol:
+  postgres_data:

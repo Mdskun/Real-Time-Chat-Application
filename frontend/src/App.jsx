@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { API_BASE } from "./apiConfig.js";
 
 import Sidebar from "./components/Sidebar.jsx";
 import ChatWindow from "./components/ChatWindow.jsx";
@@ -43,7 +42,7 @@ export default function App() {
       try {
         // Fetch user data from the '/api/me/' endpoint using the stored token.
         const token = localStorage.getItem("access");
-        const res = await axios.get(`${API_BASE}/me/`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/me/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

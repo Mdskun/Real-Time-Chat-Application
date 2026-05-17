@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { API_BASE } from "../apiConfig.js";
 
 // Helper function to format an ISO date string into a human-readable "last seen" status.
 function formatLastSeen(isoString) {
@@ -56,6 +55,7 @@ export default function ChatWindow({
 
   // State to hold the presence information (online status, last seen) of the other user.
   const [presence, setPresence] = useState(null);
+
   // This effect runs when `otherUser` changes (i.e., when a new chat is selected).
   // It's responsible for loading all initial data for the chat and setting up polling.
   useEffect(() => {
@@ -74,7 +74,7 @@ export default function ChatWindow({
     const fetchBlockStatus = async () => {
       try {
         const res = await axios.get(
-          `${API_BASE}/chat/block/status/?user_id=${otherUser.id}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/chat/block/status/?user_id=${otherUser.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@ export default function ChatWindow({
     // Fetches the message history with the other user.
     const fetchMessages = async () => {
       try {
-        const url = `${API_BASE}/chat/messages/?user_id=${otherUser.id}`;
+        const url = `${import.meta.env.VITE_API_BASE_URL}/api/chat/messages/?user_id=${otherUser.id}`;
 
         const res = await axios.get(url, {
           headers: {
@@ -115,7 +115,7 @@ export default function ChatWindow({
     // Fetches the presence status for the other user.
     const fetchPresence = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/presence/`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/presence/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -166,7 +166,7 @@ export default function ChatWindow({
       const token = localStorage.getItem("access");
       // POST request to send the new message.
       const res = await axios.post(
-        `${API_BASE}/chat/messages/`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/chat/messages/`,
         {
           receiver: otherUser.id,
           content: text,
@@ -198,7 +198,7 @@ export default function ChatWindow({
       if (!blockInfo.blockedByMe) {
         // If not blocked, send a request to block the user.
         await axios.post(
-          `${API_BASE}/chat/block/`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/chat/block/`,
           { user_id: otherUser.id },
           {
             headers: {
@@ -210,7 +210,7 @@ export default function ChatWindow({
       } else {
         // If already blocked, send a request to unblock the user.
         await axios.delete(
-          `${API_BASE}/chat/block/?user_id=${otherUser.id}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/chat/block/?user_id=${otherUser.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

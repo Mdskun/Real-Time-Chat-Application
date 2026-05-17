@@ -22,7 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-node_modules/
-dist/
-build/
+node_modules/ 
+dist/ 
+build/ 
+.env 
 .env.production

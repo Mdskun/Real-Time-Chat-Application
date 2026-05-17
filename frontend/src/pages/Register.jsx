@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { API_BASE } from "../apiConfig.js";
 
 // Register component for user registration.
 // It takes callbacks `onRegistered`, `onShowLogin`, and `onShowContact` as props to handle navigation.
@@ -36,7 +35,7 @@ export default function Register({ onRegistered, onShowLogin, onShowContact }) {
     try {
       // Sends a POST request to the registration API endpoint with the form data.
       const res = await axios.post(
-        `${API_BASE}/register/`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/register/`,
         form
       );
 
@@ -138,14 +137,14 @@ export default function Register({ onRegistered, onShowLogin, onShowContact }) {
             className="btn btn-link p-0"
             onClick={onShowLogin}
           >
-            Back to Login
+            Login
           </button>
           {/* Button to switch to the Contact view to get the secret code. */}
           <button
             className="btn btn-link p-0"
             onClick={onShowContact}
           >
-            Don&apos;t know secret code ?
+            Don&apos;t know secret code?
           </button>
         </div>
       </div>
