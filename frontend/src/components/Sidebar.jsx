@@ -27,7 +27,12 @@ export default function Sidebar({
             Authorization: `Bearer ${token}`,
           },
         });
-        setUsers(res.data);
+        if (Array.isArray(res.data)) {
+          setUsers(res.data);
+        } else {
+          console.error("Error: Expected array of users, got", res.data);
+          setUsers([]);
+        }
       } catch (err) {
         console.error("Error loading users", err);
       }
@@ -50,12 +55,16 @@ export default function Sidebar({
           }
         );
 
-        // Transforms the array of presence data into a map (object) for quick lookups by user ID.
-        const map = {};
-        res.data.forEach((u) => {
-          map[u.id] = u;
-        });
-        setPresence(map);
+        // Check if response is an array before using forEach
+        if (Array.isArray(res.data)) {
+          const map = {};
+          res.data.forEach((u) => {
+            map[u.id] = u;
+          });
+          setPresence(map);
+        } else {
+          console.error("Presence error: Expected array, got", res.data);
+        }
       } catch (err) {
         console.error("Presence error", err);
       }
@@ -83,13 +92,16 @@ export default function Sidebar({
           }
         );
 
-        // Transforms the array of unread counts into a map for quick lookups by sender's user ID.
-        let map = {};
-        res.data.forEach((u) => {
-          map[u.user_id] = u.count;
-        });
-
-        setUnreadCounts(map);
+        // Check if response is an array before using forEach
+        if (Array.isArray(res.data)) {
+          let map = {};
+          res.data.forEach((u) => {
+            map[u.user_id] = u.count;
+          });
+          setUnreadCounts(map);
+        } else {
+          console.error("Unread error: Expected array, got", res.data);
+        }
       } catch (err) {
         console.error("Unread error", err);
       }
