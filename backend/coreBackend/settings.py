@@ -73,7 +73,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
     "http://localhost",
     "http://localhost:80",
     "http://localhost:8000",
@@ -88,7 +87,6 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "coreBackend.urls"
 

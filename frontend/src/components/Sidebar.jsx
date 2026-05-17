@@ -49,7 +49,7 @@ export default function Sidebar({
       // Fetches the latest presence data for all users.
       try {
         const res = await axios.get(
-          `${API_BASE}/presence/`,
+          "http://127.0.0.1:8000/api/presence/",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -86,7 +86,7 @@ export default function Sidebar({
     const loadUnread = async () => {
       try {
         const res = await axios.get(
-          `${API_BASE}/chat/unread_counts/`,
+          "http://127.0.0.1:8000/api/chat/unread_counts/",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
