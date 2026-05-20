@@ -39,6 +39,9 @@ export default function Register({ onRegistered, onShowLogin, onShowContact }) {
         form
       );
 
+      console.log(`${import.meta.env.VITE_API_BASE_URL}/api/register/`)
+      console.log("above api/login's result:-------------------")
+      console.log(res.data)
       // On successful registration, set a success message.
       setSuccess("Account created successfully. You can now log in.");
       // Reset the form fields.

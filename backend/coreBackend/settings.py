@@ -60,16 +60,22 @@ _extra_origins = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://real-time-chat-application-eta.vercel.app",
+    "http://minu.local:4173",
+    "http://backend:8000",
+    "http://frontend:4173",
     *_extra_origins,
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "https://real-time-chat-application-eta.vercel.app",
+    "http://backend:8000",
+    "http://frontend:4173",
+    "http://minu.local:4173",
     *_extra_origins,
 ]
 
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "coreBackend.urls"
