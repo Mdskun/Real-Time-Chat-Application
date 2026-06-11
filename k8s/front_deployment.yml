@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-frontend
+  namespace: chatapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chatapp
+      tier: front
+  template:
+    metadata:
+      labels:
+        app: chatapp
+        tier: front
+    spec:
+      containers:
+      - name: chat-frontend
+        image: mdskun/chatapp2_frontend:latest
+        envFrom:
+        - configMapRef:
+            name: env-front
+        ports:
+        - containerPort: 5173
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5173
+          initialDelaySeconds: 10
+          periodSeconds: 10

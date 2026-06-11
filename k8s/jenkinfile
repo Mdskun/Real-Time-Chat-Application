@@ -1,0 +1,48 @@
+# Jenkins Freestyle Shell Steps
+# -----------------------------------------------------------
+# Step 1 — Build & push images (run from workspace root)
+# -----------------------------------------------------------
+
+echo $DOCKERPASS | sudo docker login --username $DOCKER_USER --password-stdin
+
+sudo docker build -t docker.io/mdskun/chatapp2_frontend:latest ./frontend
+sudo docker push docker.io/mdskun/chatapp2_frontend:latest
+
+sudo docker build -t docker.io/mdskun/chatapp2_backend:latest ./backend
+sudo docker push docker.io/mdskun/chatapp2_backend:latest
+
+# -----------------------------------------------------------
+# Step 2 — Deploy on k8s slave node
+# -----------------------------------------------------------
+
+sudo ssh -i /var/lib/jenkins/key ec2-user@k-slave '
+  # Pull latest repo
+  if [ -d Real-Time-Chat-Application ]; then
+    cd Real-Time-Chat-Application && sudo git pull
+  else
+    sudo git clone https://github.com/Mdskun/Real-Time-Chat-Application.git
+    cd Real-Time-Chat-Application
+  fi
+
+  cd Real-Time-Chat-Application
+
+  # Login & pull images
+  echo '"$DOCKERPASS"' | sudo docker login --username '"$DOCKER_USER"' --password-stdin
+  sudo docker pull docker.io/mdskun/chatapp2_frontend:latest
+  sudo docker pull docker.io/mdskun/chatapp2_backend:latest
+
+  # Apply k8s manifests in dependency order
+  kubectl apply -f k8s/namespace.yml
+  kubectl apply -f k8s/configmaps.yml
+  kubectl apply -f k8s/db_stateful.yml
+  kubectl apply -f k8s/db_service.yml
+  kubectl apply -f k8s/db_service2.yml
+  kubectl apply -f k8s/back_deployment.yml
+  kubectl apply -f k8s/back_service.yml
+  kubectl apply -f k8s/front_deployment.yml
+  kubectl apply -f k8s/front_service.yml
+
+  # Rollout status checks
+  kubectl rollout status deployment/chat-backend -n chatapp
+  kubectl rollout status deployment/chat-frontend -n chatapp
+'

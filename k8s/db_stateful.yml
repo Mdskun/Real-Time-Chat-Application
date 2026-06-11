@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: chat-db
+  namespace: chatapp
+spec:
+  serviceName: "chat-db"   # must match the headless Service name
+  replicas: 1               # postgres primary — keep at 1 unless you configure replication
+  selector:
+    matchLabels:
+      app: chatapp
+      tier: db
+  template:
+    metadata:
+      labels:
+        app: chatapp
+        tier: db
+    spec:
+      containers:
+      - name: chat-db
+        image: postgres:15
+        envFrom:
+        - configMapRef:
+            name: env-back
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: db-store
+          mountPath: /var/lib/postgresql/data
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "chatuser", "-d", "chatdb"]
+          initialDelaySeconds: 10
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: db-store
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi

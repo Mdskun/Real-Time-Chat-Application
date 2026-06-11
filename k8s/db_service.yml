@@ -1,0 +1,14 @@
+# Headless Service — stable DNS for the StatefulSet pods (chat-db-0.chat-db.chatapp.svc.cluster.local)
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-db
+  namespace: chatapp
+spec:
+  clusterIP: None
+  selector:
+    app: chatapp
+    tier: db
+  ports:
+    - port: 5432
+      targetPort: 5432

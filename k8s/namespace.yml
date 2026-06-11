@@ -1,0 +1,29 @@
+# ConfigMap for backend (Django + DB connection vars)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-back
+  namespace: chatapp
+data:
+  DJANGO_SECRET_KEY: \"your-secret-key-here\"
+  REGISTRATION_SECRET: \"your-registration-secret-here\"
+  # localhost is already hardcoded in settings.py — these add the k8s service names
+  DJANGO_ALLOWED_HOSTS: \"chat-backend-svc,chat-backend-svc.chatapp.svc.cluster.local,chat-frontend-svc\"
+  DB_ENGINE: \"django.db.backends.postgresql\"
+  DB_NAME: \"chatdb\"
+  DB_USER: \"chatuser\"
+  DB_PASSWORD: \"chatpass\"
+  DB_HOST: \"chat-db\"
+  DB_PORT: \"5432\"
+  POSTGRES_DB: \"chatdb\"
+  POSTGRES_USER: \"chatuser\"
+  POSTGRES_PASSWORD: \"chatpass\"
+---
+# ConfigMap for frontend (Vite env vars)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-front
+  namespace: chatapp
+data:
+  VITE_API_BASE_URL: \"http://chat-backend-svc:8000\"

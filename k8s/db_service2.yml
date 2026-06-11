@@ -1,0 +1,13 @@
+# ClusterIP Service — used by the backend to reach postgres by a stable name
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-db-svc
+  namespace: chatapp
+spec:
+  selector:
+    app: chatapp
+    tier: db
+  ports:
+    - port: 5432
+      targetPort: 5432
