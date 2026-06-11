@@ -27,6 +27,8 @@ export default function Sidebar({
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(`${import.meta.env.VITE_API_BASE_URL}/api/users/`)
+        console.log("USERS API:", res.data);
         setUsers(res.data);
       } catch (err) {
         console.error("Error loading users", err);
@@ -49,7 +51,7 @@ export default function Sidebar({
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
+        console.log("PRESENCE:", res.data);
         // Transforms the array of presence data into a map (object) for quick lookups by user ID.
         const map = {};
         res.data.forEach((u) => {
@@ -82,7 +84,7 @@ export default function Sidebar({
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
+        console.log("UNREAD:", res.data);
         // Transforms the array of unread counts into a map for quick lookups by sender's user ID.
         let map = {};
         res.data.forEach((u) => {

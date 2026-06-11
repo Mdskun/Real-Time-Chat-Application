@@ -4,4 +4,8 @@ terraform.tfstate
 terraform.tfstate.backup
 .terraform.tfstate.lock.info
 .terraform.lock.hcl
+<<<<<<< HEAD
 configmaps.yml
+=======
+.env
+>>>>>>> ec4f92494d7c100df1df0eddea6a7f97573fd75e
