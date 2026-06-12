@@ -133,11 +133,12 @@ kubectl apply -f k8s/db_stateful.yml
 
 # 6. Wait for DB to be ready before applying backend (entrypoint.sh needs postgres up)
 echo "Waiting for postgres pod to be ready..."
-kubectl wait \
-  --for=condition=ready pod \
-  -l app=chatapp,tier=db \
-  -n chatapp \
-  --timeout=120s
+if ! kubectl wait --for=condition=ready pod/chat-db-0 -n chatapp --timeout=300s; then
+  echo "❌ Postgres failed. Dumping logs..."
+  kubectl describe pod chat-db-0 -n chatapp
+  kubectl logs chat-db-0 -n chatapp
+  exit 1
+fi
 
 # 7. Backend
 kubectl apply -f k8s/back_deployment.yml
