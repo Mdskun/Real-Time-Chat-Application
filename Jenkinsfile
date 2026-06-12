@@ -128,6 +128,9 @@ kubectl create secret generic env-secrets \
 kubectl apply -f k8s/db_service.yml
 kubectl apply -f k8s/db_service2.yml
 
+# 4.5. Make PV so that volume is done
+kubectl apply -f k8s/pv.yml
+
 # 5. DB StatefulSet
 kubectl apply -f k8s/db_stateful.yml
 
