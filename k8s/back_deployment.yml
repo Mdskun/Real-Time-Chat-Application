@@ -18,11 +18,12 @@ spec:
       containers:
       - name: chat-backend
         image: mdskun/chatapp2_backend:latest
+        imagePullPolicy: Always
         envFrom:
         - configMapRef:
-            name: env-back
+            name: env-back     # non-sensitive config
         - secretRef:
-            name: env-secrets
+            name: env-secrets  # DJANGO_SECRET_KEY, REGISTRATION_SECRET, DB_PASSWORD, POSTGRES_PASSWORD
         ports:
         - containerPort: 8000
         readinessProbe:

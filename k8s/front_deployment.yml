@@ -17,10 +17,12 @@ spec:
     spec:
       containers:
       - name: chat-frontend
+        # IMPORTANT: VITE_API_BASE_URL is baked into the JS bundle at docker build time
+        # (vite replaces import.meta.env.VITE_* at build, not at runtime).
+        # Pass --build-arg VITE_API_BASE_URL=http://chat-backend-svc:8000 in your docker build command.
+        # No envFrom needed here — runtime env vars cannot change a Vite build.
         image: mdskun/chatapp2_frontend:latest
-        envFrom:
-        - configMapRef:
-            name: env-front
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
         readinessProbe:
@@ -29,3 +31,4 @@ spec:
             port: 3000
           initialDelaySeconds: 10
           periodSeconds: 10
+          failureThreshold: 3

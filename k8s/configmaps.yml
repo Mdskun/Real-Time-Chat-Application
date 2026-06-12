@@ -1,3 +1,6 @@
+# ConfigMap — non-sensitive config only
+# Sensitive values (DJANGO_SECRET_KEY, REGISTRATION_SECRET, DB_PASSWORD, POSTGRES_PASSWORD)
+# are in secret.yml (gitignored) and injected via secretRef in deployments
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,15 +11,10 @@ data:
   DB_ENGINE: "django.db.backends.postgresql"
   DB_NAME: "chatdb"
   DB_USER: "chatuser"
+  # DB_HOST must match the headless Service name (chat-db) so entrypoint.sh nc check resolves
   DB_HOST: "chat-db"
   DB_PORT: "5432"
   POSTGRES_DB: "chatdb"
   POSTGRES_USER: "chatuser"
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: env-front
-  namespace: chatapp
-data:
-  VITE_API_BASE_URL: "http://chat-backend-svc:8000"
+  # PGDATA subdirectory prevents postgres "directory not empty" error on PVC root mount
+  PGDATA: "/var/lib/postgresql/data/pgdata"

@@ -4,8 +4,8 @@ metadata:
   name: chat-db
   namespace: chatapp
 spec:
-  serviceName: "chat-db"   # must match the headless Service name
-  replicas: 1               # postgres primary — keep at 1 unless you configure replication
+  serviceName: "chat-db"
+  replicas: 1
   selector:
     matchLabels:
       app: chatapp
@@ -21,14 +21,16 @@ spec:
         image: postgres:15
         envFrom:
         - configMapRef:
-            name: env-back
+            name: env-back     # provides POSTGRES_DB, POSTGRES_USER, PGDATA
         - secretRef:
-            name: env-secrets
+            name: env-secrets  # provides POSTGRES_PASSWORD
         ports:
         - containerPort: 5432
         volumeMounts:
         - name: db-store
           mountPath: /var/lib/postgresql/data
+          # PGDATA env var points postgres to the pgdata/ subdirectory inside this mount,
+          # avoiding the "directory not empty" error postgres throws on a bare PVC mount
         readinessProbe:
           exec:
             command: ["pg_isready", "-U", "chatuser", "-d", "chatdb"]
