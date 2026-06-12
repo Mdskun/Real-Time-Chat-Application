@@ -1,14 +1,8 @@
 FROM node:20-bullseye AS builder
-#  more stable than slim
 
 WORKDIR /app
 
-# Update npm to avoid bug
-RUN npm install -g npm@10
-
 COPY package*.json ./
-
-# Clean + reliable install
 RUN npm ci --no-audit --no-fund
 
 COPY . .
@@ -23,11 +17,12 @@ FROM node:20-bullseye
 
 WORKDIR /app
 
-# Use lightweight static server
-RUN npm install -g serve
+# 👇 Use local dependency instead of global install
+RUN npm install serve
+RUN npm config set registry https://registry.npmjs.org/
 
 COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
-CMD ["serve", "-s", "dist", "-l", "3000"]
+CMD ["npx", "serve", "-s", "dist", "-l", "3000"]
