@@ -21,6 +21,8 @@ spec:
         envFrom:
         - configMapRef:
             name: env-back
+        - secretRef:
+            name: env-secrets
         ports:
         - containerPort: 8000
         readinessProbe:

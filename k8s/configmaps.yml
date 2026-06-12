@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-back
+  namespace: chatapp
+data:
+  DJANGO_ALLOWED_HOSTS: "chat-backend-svc,chat-backend-svc.chatapp.svc.cluster.local,chat-frontend-svc"
+  DB_ENGINE: "django.db.backends.postgresql"
+  DB_NAME: "chatdb"
+  DB_USER: "chatuser"
+  DB_HOST: "chat-db"
+  DB_PORT: "5432"
+  POSTGRES_DB: "chatdb"
+  POSTGRES_USER: "chatuser"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-front
+  namespace: chatapp
+data:
+  VITE_API_BASE_URL: "http://chat-backend-svc:8000"

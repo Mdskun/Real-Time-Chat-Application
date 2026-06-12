@@ -22,6 +22,8 @@ spec:
         envFrom:
         - configMapRef:
             name: env-back
+        - secretRef:
+            name: env-secrets
         ports:
         - containerPort: 5432
         volumeMounts:
