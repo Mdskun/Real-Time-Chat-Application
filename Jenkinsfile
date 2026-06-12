@@ -31,6 +31,7 @@ pipeline {
                     )
                 ]) {
                     sh '''
+                        sudo systemctl restart docker
                         echo "$DOCKERPASS" | docker login --username "$DOCKER_USER" --password-stdin
 
                         # Frontend: VITE_API_BASE_URL must be passed as a build ARG
