@@ -38,7 +38,7 @@ pipeline {
                         # because Vite bakes import.meta.env.VITE_* into the JS bundle at build time.
                         # A runtime env var injected by Kubernetes has NO effect on an already-built bundle.
                         docker build \
-                            --build-arg VITE_API_BASE_URL="${VITE_API_URL}" \
+                            --build-arg VITE_API_BASE_URL="${VITE_API_URL}"  --network=host\
                             -t "${DOCKER_REGISTRY}/${FRONTEND_IMAGE}:latest" \
                             -t "${DOCKER_REGISTRY}/${FRONTEND_IMAGE}:${BUILD_NUMBER}" \
                             ./frontend
@@ -46,7 +46,7 @@ pipeline {
                         docker push "${DOCKER_REGISTRY}/${FRONTEND_IMAGE}:latest"
                         docker push "${DOCKER_REGISTRY}/${FRONTEND_IMAGE}:${BUILD_NUMBER}"
 
-                        docker build \
+                        docker build  --network=host \
                             -t "${DOCKER_REGISTRY}/${BACKEND_IMAGE}:latest" \
                             -t "${DOCKER_REGISTRY}/${BACKEND_IMAGE}:${BUILD_NUMBER}" \
                             ./backend
