@@ -144,8 +144,8 @@
 └──────────────────────────────────────────────────────────┘
 ```
 
-**Design Pattern**: MVT (Model-View-Template) → REST API  
-**Communication**: HTTP/JSON with JWT Bearer tokens  
+**Design Pattern**: MVT (Model-View-Template) → REST API
+**Communication**: HTTP/JSON with JWT Bearer tokens
 **Real-time Strategy**: Client-side polling with 1s interval
 
 ---
@@ -222,12 +222,12 @@ cd frontend
 npm install
 echo "VITE_API_BASE_URL=http://localhost:8000" > .env.local
 npm run dev
-# Frontend: http://localhost:5173/
+# Frontend: http://localhost:3000/
 ```
 
 #### 4️⃣ Test the Application
 
-- ✅ Open http://localhost:5173/ in your browser
+- ✅ Open http://localhost:3000/ in your browser
 - ✅ Register a new account
 - ✅ Create another account in incognito mode
 - ✅ Start messaging between accounts
@@ -247,7 +247,7 @@ docker-compose up -d
 docker-compose exec backend python manage.py migrate
 docker-compose exec backend python manage.py createsuperuser
 
-# Frontend: http://localhost:5173/
+# Frontend: http://localhost:3000/
 # Backend:  http://localhost:8000/
 # Admin:    http://localhost:8000/admin/
 ```

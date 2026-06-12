@@ -696,7 +696,7 @@ class RegisterThrottle(SimpleRateThrottle):
 ```python
 # Whitelist allowed origins
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",    # Development
+    "http://localhost:3000",    # Development
     "https://app.example.com",  # Production
 ]
 ```

@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: process.env.VITE_HOST || '0.0.0.0',
-    port: 5173,
+    port: 3000,
     strictPort: true,
 
     // optional (depending on Vite version / plugins)

@@ -58,7 +58,7 @@ _extra_origins = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "http://localhost:3000",
     "https://real-time-chat-application-eta.vercel.app",
     "http://minu.local:4173",
     "http://backend:8000",
@@ -67,7 +67,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
+    "http://localhost:3000",
     "https://real-time-chat-application-eta.vercel.app",
     "http://backend:8000",
     "http://frontend:4173",
