@@ -1,9 +1,15 @@
-FROM node:20-slim AS builder
+FROM node:20-bullseye AS builder
+#  more stable than slim
 
 WORKDIR /app
 
+# Update npm to avoid bug
+RUN npm install -g npm@10
+
 COPY package*.json ./
-RUN npm ci
+
+# Clean + reliable install
+RUN npm ci --no-audit --no-fund
 
 COPY . .
 
@@ -12,15 +18,16 @@ ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 RUN npm run build
 
-FROM node:20-slim
+
+FROM node:20-bullseye
 
 WORKDIR /app
 
-COPY --from=builder /app/package*.json ./
-RUN npm ci --omit=dev
+# Use lightweight static server
+RUN npm install -g serve
 
 COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["serve", "-s", "dist", "-l", "3000"]
