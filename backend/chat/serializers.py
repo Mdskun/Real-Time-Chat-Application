@@ -5,7 +5,7 @@ from .models import Message, Room
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(source="id", read_only=True)
+    id = serializers.UUIDField(format='hex_verbose', read_only=True)
     room = serializers.CharField(source="room.id", read_only=True)
     sender = UserSerializer(read_only=True)
 
