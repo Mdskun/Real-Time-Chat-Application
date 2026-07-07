@@ -49,6 +49,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if message_type == "message":
             message = await self.create_message(data.get("content", ""))
             payload = await self.serialize_message(message)
+            payload = json.loads(json.dumps(payload, default=str))
             await self.channel_layer.group_send(
                 self.room_group_name, {"type": "chat.message", "message": payload}
             )
