@@ -5,11 +5,13 @@ from .models import Message, Room
 
 
 class MessageSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source="id", read_only=True)
+    room = serializers.CharField(source="room.id", read_only=True)
     sender = UserSerializer(read_only=True)
 
     class Meta:
         model = Message
-        fields = ("id", "room", "sender", "content", "created_at", "is_read")
+        fields = ("id", "room", "sender", "content", "created_at")
         read_only_fields = ("id", "sender", "created_at")
 
 
