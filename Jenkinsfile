@@ -9,6 +9,10 @@ pipeline {
         K8S_SLAVE_HOST  = "k-slave"
         K8S_SLAVE_USER  = "ec2-user"
         SSH_KEY_PATH    = "/var/lib/jenkins/key"
+        // Reused on every ssh call: these two EC2s are internal infra Jenkins owns,
+        // so we don't pin host keys - avoids "REMOTE HOST IDENTIFICATION HAS CHANGED"
+        // failures whenever k-slave is stopped/restarted and gets a new host key.
+        SSH_OPTS        = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
         REPO_URL        = "https://github.com/Mdskun/Real-Time-Chat-Application.git"
         REPO_DIR        = "Real-Time-Chat-Application"
     }
@@ -26,7 +30,7 @@ pipeline {
                 script {
                     def slaveIp = sh(
                         script: '''
-                            ssh -i "${SSH_KEY_PATH}" -o StrictHostKeyChecking=no \
+                            ssh -i "${SSH_KEY_PATH}" ${SSH_OPTS} \
                                 "${K8S_SLAVE_USER}@${K8S_SLAVE_HOST}" "curl -s ifconfig.me"
                         ''',
                         returnStdout: true
@@ -105,17 +109,21 @@ pipeline {
                     // into the checked-in "chat.local" placeholder at apply time only -
                     // the files in k8s/ stay chat.local for local/dev use.
                     sh '''
-                        # Copy repo to slave (or update it)
-                        ssh -i "${SSH_KEY_PATH}" \
-                            -o StrictHostKeyChecking=no \
+                        # Copy repo to slave (or update it). Uses fetch + reset --hard against
+                        # origin/HEAD instead of "git pull" so it never assumes a branch name
+                        # (works whether the default branch is master, main, or anything else,
+                        # and never fails on local drift/conflicts on the slave).
+                        ssh -i "${SSH_KEY_PATH}" ${SSH_OPTS} \
                             "${K8S_SLAVE_USER}@${K8S_SLAVE_HOST}" \
-                            "if [ -d ${REPO_DIR} ]; then cd ${REPO_DIR} && git pull; \
-                             else git clone ${REPO_URL} && cd ${REPO_DIR}; fi"
+                            "if [ -d ${REPO_DIR}/.git ]; then \
+                                cd ${REPO_DIR} && git fetch origin && git reset --hard origin/HEAD; \
+                             else \
+                                git clone ${REPO_URL} ${REPO_DIR}; \
+                             fi"
 
                         # Write a temp env file on the slave with credentials
                         # (ssh passes the values as args — never stored in shell history)
-                        ssh -i "${SSH_KEY_PATH}" \
-                            -o StrictHostKeyChecking=no \
+                        ssh -i "${SSH_KEY_PATH}" ${SSH_OPTS} \
                             "${K8S_SLAVE_USER}@${K8S_SLAVE_HOST}" \
                             "cat > /tmp/deploy_env.sh << 'ENVEOF'
 export DOCKER_USER='${DOCKER_USER}'
@@ -130,8 +138,7 @@ ENVEOF
 chmod 600 /tmp/deploy_env.sh"
 
                         # Run the full deploy script on the slave
-                        ssh -i "${SSH_KEY_PATH}" \
-                            -o StrictHostKeyChecking=no \
+                        ssh -i "${SSH_KEY_PATH}" ${SSH_OPTS} \
                             "${K8S_SLAVE_USER}@${K8S_SLAVE_HOST}" bash << 'SCRIPT'
 set -e
 source /tmp/deploy_env.sh
