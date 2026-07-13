@@ -27,10 +27,10 @@ spec:
     spec:
       containers:
         - name: backend
-          # Build from ./backend and push to your registry, e.g.
-          # docker build -t <registry>/realtime-chat-backend:latest ./backend
-          image: realtime-chat-backend:latest
-          imagePullPolicy: IfNotPresent
+          # Same image built from ./backend/Dockerfile (docker-compose.yml: build.context: ./backend),
+          # pushed by the Jenkins pipeline to this exact repo/tag.
+          image: docker.io/mdskun/chatapp_backend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           envFrom:

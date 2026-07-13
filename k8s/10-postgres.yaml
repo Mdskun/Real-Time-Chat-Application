@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
+  name: db-pvc
   namespace: realtime-chat
 spec:
   accessModes:
@@ -13,7 +13,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: db
   namespace: realtime-chat
 spec:
   replicas: 1
@@ -21,14 +21,15 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: postgres
+      app: db
   template:
     metadata:
       labels:
-        app: postgres
+        app: db
     spec:
       containers:
-        - name: postgres
+        - name: db
+          # Matches docker-compose.yml: image: postgres:16-alpine
           image: postgres:16-alpine
           ports:
             - containerPort: 5432
@@ -49,32 +50,35 @@ spec:
                   name: chat-secrets
                   key: POSTGRES_PASSWORD
           volumeMounts:
-            - name: postgres-storage
+            - name: db-storage
               mountPath: /var/lib/postgresql/data
               subPath: pgdata
+          # Same check as docker-compose.yml's healthcheck: pg_isready -U $POSTGRES_USER -d $POSTGRES_DB
           readinessProbe:
             exec:
-              command: ["pg_isready", "-U", "chatuser"]
+              command: ["sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
             initialDelaySeconds: 5
             periodSeconds: 5
           livenessProbe:
             exec:
-              command: ["pg_isready", "-U", "chatuser"]
+              command: ["sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
             initialDelaySeconds: 15
             periodSeconds: 10
       volumes:
-        - name: postgres-storage
+        - name: db-storage
           persistentVolumeClaim:
-            claimName: postgres-pvc
+            claimName: db-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
+  # Name must be "db" - it's used as POSTGRES_HOST in the ConfigMap,
+  # exactly like the "db" service name in docker-compose.yml
+  name: db
   namespace: realtime-chat
 spec:
   selector:
-    app: postgres
+    app: db
   ports:
     - port: 5432
       targetPort: 5432

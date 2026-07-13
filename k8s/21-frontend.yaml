@@ -15,11 +15,11 @@ spec:
     spec:
       containers:
         - name: frontend
-          # Build from ./frontend and push to your registry, e.g.
-          # docker build -t <registry>/realtime-chat-frontend:latest ./frontend \
-          #   --build-arg VITE_API_URL=http://chat.local/api --build-arg VITE_WS_URL=ws://chat.local/ws
-          image: realtime-chat-frontend:latest
-          imagePullPolicy: IfNotPresent
+          # Built from ./frontend/Dockerfile (same Dockerfile docker-compose.yml uses),
+          # with --build-arg VITE_API_URL / --build-arg VITE_WS_URL (matches the Dockerfile's
+          # ARG names exactly) pointing at the public ingress host, then pushed by Jenkins.
+          image: docker.io/mdskun/chatapp_frontend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           readinessProbe:

@@ -8,7 +8,7 @@ data:
   DJANGO_ALLOWED_HOSTS: "*"
   POSTGRES_DB: "chatdb"
   POSTGRES_USER: "chatuser"
-  POSTGRES_HOST: "postgres"
+  POSTGRES_HOST: "db"
   POSTGRES_PORT: "5432"
   REDIS_HOST: "redis"
   REDIS_PORT: "6379"
